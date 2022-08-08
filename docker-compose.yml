@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  orchester:
+    build: 
+      context: ./orchester
+    ports:
+      - "80:1000"
+    restart: always
+
+
