@@ -1,12 +1,16 @@
 import logging
+import customer
 from fastapi import FastAPI
 from fastapi.logger import logger as fastapi_logger
+from starlette.middleware.cors import CORSMiddleware
+from db import engine, metadata, database
 
 log_levels_handler = {
     "DEBUG": logging.DEBUG,
     "INFO": logging.INFO,
     "WARNING": logging.WARNING
 }
+
 
 
 app = FastAPI()
@@ -23,3 +27,23 @@ handler.setFormatter(formatter)
 async def root():
     return {"message": "Orchestrator is working!"}
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+     allow_methods=["DELETE", "GET", "POST", "PUT"],
+    allow_headers=["*"],
+)
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
+
+
+app.include_router(customer.router, prefix="/customer", tags=["customer"])
