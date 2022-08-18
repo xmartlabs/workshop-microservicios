@@ -7,7 +7,7 @@ async def post(payload: CustomerSchema):
 
     return await database.execute(query=query)
 
-async def get(id: int):
+async def get(id: str):
     query = customer.select().where(id == customer.c.id)
     return await database.fetch_one(query=query)
     
@@ -17,7 +17,7 @@ async def get_all():
     return await database.fetch_all(query=query)
 
 
-async def put(id:int, payload=CustomerSchema):
+async def put(id: str, payload=CustomerSchema):
     query = (
         customer.update().where(id == customer.c.id).values(name=payload.name, address=payload.address)
         .returning(customer.c.id)
@@ -25,6 +25,6 @@ async def put(id:int, payload=CustomerSchema):
     return await database.execute(query=query)
 
 
-async def delete(id:int):
+async def delete(id: str):
     query = customer.delete().where(id == customer.c.id)
     return await database.execute(query=query)

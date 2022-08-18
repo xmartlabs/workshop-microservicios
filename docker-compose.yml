@@ -3,9 +3,12 @@ services:
   orchester:
     build: 
       context: ./orchester
+    container_name: orchester
     ports:
       - "80:1000"
-    restart: always
+    # restart: always
+    volumes:
+      - ./orchester/app/:/code/app
     environment:
       - DATABASE_URL=postgresql://workshop:workshop@customer-db/workshop_dev
   customer-db:
@@ -21,7 +24,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
-    restart: always
+    # restart: always
     ports:
       - "5050:80"
     environment:

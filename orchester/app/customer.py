@@ -19,7 +19,7 @@ async def create_customer(payload: CustomerSchema):
 
 
 @router.get("/{id}/", response_model=CustomerSchema)
-async def read_customer(id: int = Path(..., gt=0),):
+async def read_customer(id: str):
     customer = await crud.get(id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
@@ -32,7 +32,7 @@ async def read_all_customers():
 
 
 @router.put("/{id}/", response_model=CustomerSchema)
-async def update_customer(payload:CustomerSchema,id:int=Path(...,gt=0)):
+async def update_customer(payload:CustomerSchema, id: str):
     customer = await crud.get(id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
@@ -45,9 +45,8 @@ async def update_customer(payload:CustomerSchema,id:int=Path(...,gt=0)):
     return response_object
 
 
-#DELETE route
 @router.delete("/{id}/", response_model=CustomerSchema)
-async def delete_customer(id:int = Path(...,gt=0)):
+async def delete_customer(id: str):
     customer = await crud.get(id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
