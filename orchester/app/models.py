@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError, validator
 
 
 class CustomerSchema(BaseModel):
@@ -8,8 +8,11 @@ class CustomerSchema(BaseModel):
     bank_account: str
 
 
-class Deposit(BaseModel):
+class AmountPayload(BaseModel):
     amount: float
 
-class Withdrawal(BaseModel):
-    amount: float
+    @validator('amount')
+    def positive_number(cls, value):
+        if not value > 0:
+            raise ValueError("Must be a positive amount")
+        return value

@@ -11,6 +11,7 @@ services:
       - ./orchester/app/:/code/app
     environment:
       - DATABASE_URL=postgresql://workshop:workshop@customer-db/workshop_dev
+      - BALANCE_URL="http://fakeurl/"
   customer-db:
     image: postgres:12.1-alpine
     volumes:

@@ -1,11 +1,12 @@
 import logging
 import customer
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.logger import logger as fastapi_logger
 from starlette.middleware.cors import CORSMiddleware
 from db import engine, metadata, database
-from models import Deposit, Withdrawal
+from models import AmountPayload
 
+from business import money_to_balance
 
 log_levels_handler = {
     "DEBUG": logging.DEBUG,
@@ -50,16 +51,18 @@ async def shutdown():
 
 app.include_router(customer.router, prefix="/customer", tags=["customer"])
 
-@app.post("{customer_id}/deposit/")
-async def deposit(customer_id: str, body: Deposit):
-    * enviar deposito a balance
-    * confirmar al usuario el ingreso
+@app.post("/{customer_id}/deposit/")
+async def deposit(customer_id: str, body: AmountPayload):
+    sent = money_to_balance(
+        customer=customer_id,
+        amount=body.amount
+    )
+    message = "Your money was received" if sent else "There was a problem. Try later"
+    status = 200 if sent else 503
+    return Response(message, status)
 
 
-@app.post("{customer_id}/withdraw/")
-async def withdraw(customer_id: str, body: Withdrawal):
-    * buscar el banco del customer
-    * descontar del balance el amount
-    * enviar a thirdparty la transacción
+@app.post("/{customer_id}/withdraw/")
+async def withdraw(customer_id: str, body: AmountPayload):
 
-    
+    ...
