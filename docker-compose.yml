@@ -32,6 +32,12 @@ services:
   #     PGADMIN_DEFAULT_PASSWORD: admin
   #   volumes:
   #     - pgadmin-data:/var/lib/pgadmin
+  integration:
+    build:
+      context: ./integration
+    container_name: integration
+    ports:
+      - "4000:4000"
   balance:
     build:
       context: ./balance
