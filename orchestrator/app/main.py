@@ -6,7 +6,8 @@ from starlette.middleware.cors import CORSMiddleware
 from db import engine, metadata, database
 from models import AmountPayload
 
-from business import money_to_balance
+from business import money_to_balance, execute_withdraw
+from exeptions import BankIssue, InsufficientBalance
 
 log_levels_handler = {
     "DEBUG": logging.DEBUG,
@@ -35,7 +36,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-     allow_methods=["DELETE", "GET", "POST", "PUT"],
+    allow_methods=["DELETE", "GET", "POST", "PUT"],
     allow_headers=["*"],
 )
 
@@ -64,5 +65,15 @@ async def deposit(customer_id: str, body: AmountPayload):
 
 @app.post("/{customer_id}/withdraw/")
 async def withdraw(customer_id: str, body: AmountPayload):
+    amount = body.amount
+    await execute_withdraw(customer_id, amount)
+    try:
+        ...
+    except InsufficientBalance:
+        return Response("There is not enough money for this operation", status_code=400)
+    except BankIssue:
+        return Response("There is any problem with your Bank's system" , status_code=503)
+    except Exception:
+        return Response("We are experiencing some problems just now, try later please", status_code=500)
 
-    ...
+    return Response("Success", status_code=200)
