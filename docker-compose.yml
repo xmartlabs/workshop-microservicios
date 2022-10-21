@@ -1,14 +1,14 @@
 version: "3.7"
 services:
-  orchester:
+  orchestrator:
     build: 
-      context: ./orchester
-    container_name: orchester
+      context: ./orchestrator
+    container_name: orchestrator
     ports:
       - "80:1000"
     # restart: always
     volumes:
-      - ./orchester/app/:/code/app
+      - ./orchestrator/app/:/code/app
     environment:
       - DATABASE_URL=postgresql://workshop:workshop@customer-db/workshop_dev
       - BALANCE_URL="http://fakeurl/"
