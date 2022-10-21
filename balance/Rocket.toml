@@ -1,0 +1,5 @@
+[default]
+port = 10000
+
+[default.databases.main]
+url = "mongodb://root:example@localhost:27017"
