@@ -49,6 +49,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - "27017:27017"
+  integration:
+    build:
+      context: ./integration
+    container_name: integration
+    ports:
+      - "4000:4000"
 volumes:
   postgres_data:
   pgadmin-data:
