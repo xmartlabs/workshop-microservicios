@@ -11,7 +11,8 @@ services:
       - ./orchestrator/app/:/code/app
     environment:
       - DATABASE_URL=postgresql://workshop:workshop@customer-db/workshop_dev
-      - BALANCE_URL="http://fakeurl/"
+      - BALANCE_URL=http://balance:9000
+      - BANK_SERVICE=http://integration:4000
   customer-db:
     image: postgres:12.1-alpine
     volumes:
@@ -38,7 +39,7 @@ services:
       context: ./balance
     container_name: balance
     ports:
-      - "8000:8000"
+      - "9000:8000"
     environment:
       - ROCKET_PORT=8000
     network_mode: 'host'

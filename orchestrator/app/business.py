@@ -22,7 +22,7 @@ def money_to_balance(*, customer: str, amount: float):
     except requests.exceptions.RequestException as e:
         logger.error(e)
         return False
-    if req.status == 400 and req.text == "INSUFFICIENT_BALANCE":
+    if req.status_code == 400 and req.text == "INSUFFICIENT_BALANCE":
         raise InsufficientBalance()
 
     success = req.status_code == 200
@@ -49,7 +49,7 @@ async def send_to_bank(*, customer: str, amount: float):
         return False
     
     success = req.status_code == 200
-    if not success and req.tex[:9] == "ERR_BANK_":
+    if not success and req.text[:9] == "ERR_BANK_":
         raise BankIssue()
 
 
