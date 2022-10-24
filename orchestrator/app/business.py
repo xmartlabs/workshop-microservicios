@@ -35,7 +35,7 @@ async def get_bank_account(*, customer):
 
 async def send_to_bank(*, customer: str, amount: float):
     account = await get_bank_account(customer=customer)
-    url = f"{BANK_SERVICE}/withdraw"
+    url = f"{BANK_SERVICE}/api/withdraw/"
     success = False
     data = {
         "customer_id": customer,
