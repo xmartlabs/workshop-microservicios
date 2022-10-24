@@ -1,6 +1,0 @@
-class InsufficientBalance(Exception):
-    ...
-
-
-class BankIssue(Exception):
-    ...
