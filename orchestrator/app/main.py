@@ -67,13 +67,7 @@ async def deposit(customer_id: str, body: AmountPayload):
 @app.post("/{customer_id}/withdraw/")
 async def withdraw(customer_id: str, body: AmountPayload):
     amount = body.amount
-    try:
-        await execute_withdraw(customer_id, amount)
-    except InsufficientBalance:
-        return HTMLResponse("There is not enough money for this operation", status_code=400)
-    except BankIssue:
-        return HTMLResponse("There is any problem with your Bank's system" , status_code=503)
-    except Exception:
-        return HTMLResponse("We are experiencing some problems just now, try later please", status_code=500)
-
-    return HTMLResponse("Success", status_code=200)
+    sent = await execute_withdraw(customer_id, amount)
+    message = "Your money was received" if sent else "There was a problem. Try later"
+    status = 200 if sent else 503
+    return HTMLResponse(message, status)

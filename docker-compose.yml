@@ -6,12 +6,11 @@ services:
     container_name: orchestrator
     ports:
       - "80:1000"
-    # restart: always
     volumes:
       - ./orchestrator/app/:/code/app
     environment:
       - DATABASE_URL=postgresql://workshop:workshop@customer-db/workshop_dev
-      - BALANCE_URL=http://balance:9000
+      - BALANCE_URL=http://balance-api:9000
       - BANK_SERVICE=http://integration:4000
   customer-db:
     image: postgres:12.1-alpine
@@ -34,15 +33,19 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-  balance:
+ 
+  balance-api:
     build:
       context: ./balance
-    container_name: balance
+    container_name: balance-api
     ports:
-      - "9000:8000"
+      - "9000:9000"
     environment:
-      - ROCKET_PORT=8000
-    network_mode: 'host'
+      - ROCKET_PORT=9000
+
+    depends_on:
+      - balance_db
+  
   balance_db:
     image: mongo:6.0.2
     environment:
