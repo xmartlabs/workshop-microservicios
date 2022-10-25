@@ -1,6 +1,6 @@
 import crud
 from models import CustomerSchema
-from fastapi import APIRouter, HTTPException, Path, FastAPI
+from fastapi import APIRouter, HTTPException
 from typing import List 
 
 router = APIRouter()
@@ -14,6 +14,7 @@ async def create_customer(payload: CustomerSchema):
         "id": payload.id,
         "name": payload.name,
         "address": payload.address,
+        "bank_account": payload.bank_account
     }
     return response_object
 
@@ -40,7 +41,8 @@ async def update_customer(payload:CustomerSchema, id: str):
     response_object = {
         "id": customer_id,
         "name": payload.name,
-        "address": payload.address
+        "address": payload.address,
+        "bank_account": payload.bank_account
     }
     return response_object
 

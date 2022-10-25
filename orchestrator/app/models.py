@@ -10,9 +10,3 @@ class CustomerSchema(BaseModel):
 
 class AmountPayload(BaseModel):
     amount: float
-
-    @validator('amount')
-    def positive_number(cls, value):
-        if not value > 0:
-            raise ValueError("Must be a positive amount")
-        return value

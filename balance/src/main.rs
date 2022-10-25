@@ -2,6 +2,7 @@
 extern crate rocket;
 
 use futures::stream::StreamExt;
+
 use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket_db_pools::mongodb::{
     self,
