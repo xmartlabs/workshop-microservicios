@@ -4,11 +4,10 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.logger import logger as fastapi_logger
 from starlette.middleware.cors import CORSMiddleware
-from db import engine, metadata, database
+from db import database
 from models import AmountPayload
 
 from business import money_to_balance, execute_withdraw
-from exeptions import BankIssue, InsufficientBalance
 
 log_levels_handler = {
     "DEBUG": logging.DEBUG,
