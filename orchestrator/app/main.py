@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.logger import logger as fastapi_logger
 from starlette.middleware.cors import CORSMiddleware
-from db import engine, metadata, database
+from db import database
 from models import AmountPayload
 
 from business import money_to_balance, execute_withdraw
@@ -76,4 +76,4 @@ async def withdraw(customer_id: str, body: AmountPayload):
     except Exception:
         return HTMLResponse("We are experiencing some problems just now, try later please", status_code=500)
 
-    return HTMLResponse("Success", status_code=200)
+    return HTMLResponse("Your money was sent", status_code=200)

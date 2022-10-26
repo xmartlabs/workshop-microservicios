@@ -1,5 +1,6 @@
 [default]
 port = 10000
+address = "0.0.0.0"
 
 [default.databases.main]
-url = "mongodb://root:example@localhost:27017"
+url = "mongodb://root:example@balance_db:27017"

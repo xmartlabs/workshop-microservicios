@@ -49,7 +49,7 @@ async def send_to_bank(*, customer: str, amount: float):
         return False
     
     success = req.status_code == 200
-    if not success and req.text[:9] == "ERR_BANK_":
+    if not success:
         raise BankIssue()
 
 
@@ -57,3 +57,5 @@ async def execute_withdraw(customer: str, amount: float):
     debited = money_to_balance(customer=customer, amount=-amount)
     if debited:
         await send_to_bank(customer=customer, amount=amount)
+    else:
+        raise Exception("opps.... houston we have a problem")
